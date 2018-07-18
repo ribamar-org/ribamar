@@ -1,0 +1,29 @@
+{
+  "name": "ribamar",
+  "version": "0.0.1",
+  "description": "...",
+  "main": "router.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/GCSBOSS/ribamar.git"
+  },
+  "keywords": [
+    "account",
+    "user",
+    "auth",
+    "credentials",
+    "permissions",
+    "groups"
+  ],
+  "author": "guillitem",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/GCSBOSS/ribamar/issues"
+  },
+  "homepage": "https://gitlab.com/GCSBOSS/ribamar#README",
+  "dependencies": {
+  }
+}
