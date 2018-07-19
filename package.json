@@ -4,7 +4,7 @@
   "description": "...",
   "main": "router.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha spec/node.js"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,6 @@
   },
   "homepage": "https://gitlab.com/GCSBOSS/ribamar#README",
   "dependencies": {
+    "node-yaml": "^3.1.1"
   }
 }
