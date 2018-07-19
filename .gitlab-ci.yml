@@ -1,0 +1,26 @@
+stages:
+  - validate
+  - build
+  - test
+  - deploy
+
+# Job para verificar o código JS.
+lint-js:
+ image: node
+ stage: validate
+ tags:
+   - docker
+ script:
+   - npm install -g eslint
+   - find $CI_PROJECT_DIR -type f -name '*.js' -print0 | xargs -0 -n1 -P4 eslint --ignore-pattern "**/*.min.js" | (! grep -v "No syntax errors detected" )
+
+# Job para testar o código JS.
+test-js:
+ image: node
+ stage: test
+ tags:
+   - docker
+ script:
+   - npm install -g mocha
+   - npm install .
+   - npm test

@@ -1,0 +1,1 @@
+[![pipeline status](https://gitlab.com/GCSBOSS/ribamar/badges/master/pipeline.svg)](https://gitlab.com/GCSBOSS/ribamar/commits/master) [![coverage report](https://gitlab.com/GCSBOSS/ribamar/badges/master/coverage.svg)](https://gitlab.com/GCSBOSS/ribamar/commits/master)
