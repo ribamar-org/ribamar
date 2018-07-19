@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "description": "...",
   "main": "./lib/main.js",
+  "bin": {
+    "ribamar": "./bin/ribamar.js"
+  },
   "scripts": {
-    "start": "node lib/main.js",
+    "start": "node bin/ribamar.js",
     "test": "mocha spec/node.js"
   },
   "repository": {
