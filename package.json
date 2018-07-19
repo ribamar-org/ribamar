@@ -2,8 +2,9 @@
   "name": "ribamar",
   "version": "0.0.1",
   "description": "...",
-  "main": "router.js",
+  "main": "./lib/main.js",
   "scripts": {
+    "start": "node lib/main.js",
     "test": "mocha spec/node.js"
   },
   "repository": {
