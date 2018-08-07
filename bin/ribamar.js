@@ -1,7 +1,7 @@
 #!node
-const getSettings = require('../lib/settings');
+const ribamar = require('../lib/main');
 
 // Asdsemble settings object.
-var settings = getSettings(process.argv[2]);
+var settings = ribamar.getSettings(process.argv[2]);
 
 console.log('Server is running with settings: ' + JSON.stringify(settings));
