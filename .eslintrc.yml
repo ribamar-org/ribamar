@@ -2,6 +2,8 @@
   env:
     node: true
     es6: true
+  parserOptions:
+    ecmaVersion: 8
   rules:
     no-dupe-args: error
     no-dupe-keys: error
@@ -61,6 +63,8 @@
           case:
              after: true
           return:
+             after: true
+          throw:
              after: true
     line-comment-position: error
     max-params:
