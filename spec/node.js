@@ -9,9 +9,10 @@ describe('lib/settings.js', () => {
     it('should return an object when invalid path is present',
         () => assert.equal(typeof getSettings('./no-file-at-all'), 'object'));
 
+    const testConf = getSettings('./spec/test.yml');
     it('should apply present properties',
-        () => assert.equal(getSettings('./spec/test.yml').property, 'value'));
+        () => assert.equal(testConf.property, 'value'));
 
     it('should overwrite properties when duplicates are present',
-        () => assert.equal(getSettings('./spec/test.yml').port, 2222));
+        () => assert.equal(testConf.port, 2222));
 });

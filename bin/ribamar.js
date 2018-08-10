@@ -1,7 +1,14 @@
 #!node
-const ribamar = require('../lib/main');
+const Ribamar = require('../lib/main');
 
-// Asdsemble settings object.
-var settings = ribamar.getSettings(process.argv[2]);
+var server = new Ribamar(process.argv[2]);
 
-console.log('Server is running with settings: ' + JSON.stringify(settings));
+server.start();
+
+function handle(){
+    server.stop();
+}
+
+process.on('exit', handle);
+process.on('SIGINT', handle);
+process.on('SIGTERM', handle);
