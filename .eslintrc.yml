@@ -74,4 +74,6 @@
     quotes:
       - warn
       - single
-    linebreak-style: error
+    linebreak-style:
+      - error
+      - windows

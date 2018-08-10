@@ -4,7 +4,7 @@ stages:
   - test
   - deploy
 
-# Job para verificar o código JS.
+# Lint js files.
 lint-js:
  image: node
  stage: validate
@@ -14,7 +14,7 @@ lint-js:
    - npm install -g eslint
    - find $CI_PROJECT_DIR -type f -name '*.js' -print0 | xargs -0 -n1 -P4 eslint --ignore-pattern "**/*.min.js" | (! grep -v "No syntax errors detected" )
 
-# Job para testar o código JS.
+# Performs unit testing.
 test-js:
   variables:
     DB_URL: mongodb://mongo:21017
