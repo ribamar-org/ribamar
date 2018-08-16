@@ -50,6 +50,7 @@ describe('DataBase', () => {
     describe.skip('#insert(collection, doc)', function(){
 
         beforeEach(async function(){
+            db = new DataBase();
             await db.connect({ url: url, dbName: 'nodeTest' });
         });
 
@@ -78,6 +79,7 @@ describe('DataBase', () => {
     describe.skip('#exists(collection, key, value)', function(){
 
         beforeEach(async function(){
+            db = new DataBase();
             await db.connect({ url: url, dbName: 'nodeTest' });
         });
 
@@ -97,6 +99,23 @@ describe('DataBase', () => {
             await db.insert('test', { msg: 'test2' });
             await db.insert('test', { msg: 'test1' });
             assert(await db.exists('test', 'msg', 'test1'));
+        });
+
+    });
+
+    describe('#close()', function(){
+
+        beforeEach(function(){
+            db = new DataBase();
+        });
+
+        it('should not fail regardless of no connection being stablished', function(){
+            db.close();
+        });
+
+        it.skip('should close a connection just fine', async function(){
+            await db.connect({ url: url, dbName: 'nodeTest' });
+            db.close();
         });
 
     });
