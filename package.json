@@ -1,6 +1,6 @@
 {
   "name": "ribamar",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "...",
   "main": "./lib/main.js",
   "bin": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/GCSBOSS/ribamar.git"
+    "url": "git+https://gitlab.com/riba-riba/ribamar.git"
   },
   "keywords": [
     "account",
@@ -25,9 +25,9 @@
   "author": "guillitem",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/GCSBOSS/ribamar/issues"
+    "url": "https://gitlab.com/riba-riba/ribamar/issues"
   },
-  "homepage": "https://gitlab.com/GCSBOSS/ribamar#README",
+  "homepage": "https://gitlab.com/riba-riba/ribamar#README",
   "dependencies": {
     "mongodb": "^3.1.1",
     "node-yaml": "^3.1.1"
