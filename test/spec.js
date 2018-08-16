@@ -9,7 +9,7 @@ describe('lib/settings.js', () => {
     it('should return an object when invalid path is present',
         () => assert.equal(typeof getSettings('./no-file-at-all'), 'object'));
 
-    const testConf = getSettings('./spec/test.yml');
+    const testConf = getSettings('./test/settings.yml');
     it('should apply present properties',
         () => assert.equal(testConf.property, 'value'));
 
