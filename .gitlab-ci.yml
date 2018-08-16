@@ -26,5 +26,6 @@ test-js:
     - docker
   script:
     - npm i -g mocha
+    - npm i -g nyc
     - npm i .
-    - npm test
+    - nyc --reporter=text-summary npm t
