@@ -34,20 +34,20 @@ describe('DataBase', () => {
             });
         });
 
-        it.skip('should not connect to inexisting database', async function(){
+        it('should not connect to inexisting database', async function(){
             await assert.rejects(async function(){
                 await db.connect({ url: 'blabla', dbName: 'blabla' });
             });
         });
 
-        it.skip('should connect to database when settings are valid', async function(){
+        it('should connect to database when settings are valid', async function(){
             await db.connect({ url: url, dbName: 'nodeTest' });
             db.close();
         });
 
     });
 
-    describe.skip('#insert(collection, doc)', function(){
+    describe('#insert(collection, doc)', function(){
 
         beforeEach(async function(){
             db = new DataBase();
@@ -76,7 +76,7 @@ describe('DataBase', () => {
 
     });
 
-    describe.skip('#exists(collection, key, value)', function(){
+    describe('#exists(collection, key, value)', function(){
 
         beforeEach(async function(){
             db = new DataBase();
@@ -113,7 +113,7 @@ describe('DataBase', () => {
             db.close();
         });
 
-        it.skip('should close a connection just fine', async function(){
+        it('should close a connection just fine', async function(){
             await db.connect({ url: url, dbName: 'nodeTest' });
             db.close();
         });
