@@ -9,7 +9,7 @@ describe('lib/settings.js', () => {
     it('should return an object when invalid path is present',
         () => assert.equal(typeof getSettings('./no-file-at-all'), 'object'));
 
-    const testConf = getSettings('./spec/test.yml');
+    const testConf = getSettings('./test/settings.yml');
     it('should apply present properties',
         () => assert.equal(testConf.property, 'value'));
 
@@ -34,22 +34,23 @@ describe('DataBase', () => {
             });
         });
 
-        it.skip('should not connect to inexisting database', async function(){
+        it('should not connect to inexisting database', async function(){
             await assert.rejects(async function(){
                 await db.connect({ url: 'blabla', dbName: 'blabla' });
             });
         });
 
-        it.skip('should connect to database when settings are valid', async function(){
+        it('should connect to database when settings are valid', async function(){
             await db.connect({ url: url, dbName: 'nodeTest' });
             db.close();
         });
 
     });
 
-    describe.skip('#insert(collection, doc)', function(){
+    describe('#insert(collection, doc)', function(){
 
         beforeEach(async function(){
+            db = new DataBase();
             await db.connect({ url: url, dbName: 'nodeTest' });
         });
 
@@ -75,9 +76,10 @@ describe('DataBase', () => {
 
     });
 
-    describe.skip('#exists(collection, key, value)', function(){
+    describe('#exists(collection, key, value)', function(){
 
         beforeEach(async function(){
+            db = new DataBase();
             await db.connect({ url: url, dbName: 'nodeTest' });
         });
 
@@ -97,6 +99,23 @@ describe('DataBase', () => {
             await db.insert('test', { msg: 'test2' });
             await db.insert('test', { msg: 'test1' });
             assert(await db.exists('test', 'msg', 'test1'));
+        });
+
+    });
+
+    describe('#close()', function(){
+
+        beforeEach(function(){
+            db = new DataBase();
+        });
+
+        it('should not fail regardless of no connection being stablished', function(){
+            db.close();
+        });
+
+        it('should close a connection just fine', async function(){
+            await db.connect({ url: url, dbName: 'nodeTest' });
+            db.close();
         });
 
     });

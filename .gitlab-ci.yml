@@ -1,8 +1,6 @@
 stages:
   - validate
-  - build
   - test
-  - deploy
 
 # Lint js files.
 lint-js:
@@ -15,9 +13,9 @@ lint-js:
    - find $CI_PROJECT_DIR -type f -name '*.js' -print0 | xargs -0 -n1 -P4 eslint --ignore-pattern "**/*.min.js" | (! grep -v "No syntax errors detected" )
 
 # Performs unit testing.
-test-js:
+unit-test:
   variables:
-    DB_URL: mongodb://mongo:21017
+    DB_URL: mongodb://mongo:27017
   services:
     - mongo
   image: node
@@ -26,5 +24,6 @@ test-js:
     - docker
   script:
     - npm i -g mocha
+    - npm i -g nyc
     - npm i .
-    - npm test
+    - nyc --reporter=text-summary npm t
