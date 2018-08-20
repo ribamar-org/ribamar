@@ -28,7 +28,7 @@ describe('DataBase', () => {
             db = new DataBase();
         });
 
-        it('should fail due to missing arguments', async function(){
+        it('should fail when missing arguments', async function(){
             await assert.rejects(async function(){
                 await db.connect();
             });
@@ -58,13 +58,13 @@ describe('DataBase', () => {
             db.close();
         });
 
-        it('should not insert due to missing arguments', async function(){
+        it('should not insert when missing arguments', async function(){
             await assert.rejects( async function(){
                 await db.insert();
             });
         });
 
-        it('should not insert when when collection name is invalid', async function(){
+        it('should not insert when collection name is invalid', async function(){
             await assert.rejects( async function(){
                 await db.insert('8test$', {});
             });
@@ -87,7 +87,7 @@ describe('DataBase', () => {
             db.close();
         });
 
-        it('should not search due to missing arguments', async function(){
+        it('should not search when missing arguments', async function(){
             await assert.rejects( async function(){
                 await db.exists();
             });
@@ -109,13 +109,108 @@ describe('DataBase', () => {
             db = new DataBase();
         });
 
-        it('should not fail regardless of no connection being stablished', function(){
+        it('should not fail even when no connection is stablished', function(){
             db.close();
         });
 
         it('should close a connection just fine', async function(){
             await db.connect({ url: url, dbName: 'nodeTest' });
             db.close();
+        });
+
+    });
+
+});
+
+describe('Router', () => {
+    const Router = require('../lib/router');
+    let router;
+
+    describe('#constructor(context)', function(){
+        it('should never fail for any reason', function(){
+            router = new Router();
+        });
+    });
+
+    describe('#run(route)', function(){
+
+        beforeEach(function(){
+            router = new Router();
+        });
+
+        it('should fail when missing arguments', function(){
+            assert.throws(() => router.run());
+        });
+
+        it('should fail when route is invalid', function(){
+            assert.throws(() => router.run('83sjdhg988'));
+        });
+
+        it('should fail when route does not exist', function(){
+            assert.throws(() => router.run('GET nothing'));
+        });
+
+        it('should run a route just fine', function(){
+            assert.equal(typeof router.run('GET version'), 'string');
+        });
+
+    });
+
+});
+
+describe('Scheduler', () => {
+    const Scheduler = require('../lib/scheduler');
+    let flag, bg;
+    const Router = require('../lib/router');
+    let router = new Router();
+    router.routes.test = { test: () => flag = true };
+
+    describe('#constructor()', function(){
+        it('should never fail for any reason', function(){
+            bg = new Scheduler();
+        });
+    });
+
+    describe('#start(settings, router)', function(){
+
+        beforeEach(function(){
+            bg = new Scheduler();
+        });
+
+        after(function(){
+            bg.stop();
+        });
+
+        it('should fail when missing arguments', function(){
+            assert.throws(() => bg.start());
+        });
+
+        it('should run a scheduled route just fine', async function(){
+            flag = false;
+            this.timeout(10000);
+            var s = new Date();
+            s.setSeconds(s.getSeconds() + 3);
+            s = s.getSeconds();
+            bg.start({ test: s + ' * * * * *' }, router);
+            await new Promise(done => setTimeout(done, 5000));
+            assert(flag);
+        });
+
+    });
+
+    describe('#stop()', function(){
+
+        it('should stop all tasks', async function(){
+            flag = false;
+            this.timeout(10000);
+            var s = new Date();
+            s.setSeconds(s.getSeconds() + 3);
+            s = s.getSeconds();
+            bg.start({ test: s + ' * * * * *' }, router);
+            await new Promise(done => setTimeout(done, 1000));
+            bg.stop();
+            await new Promise(done => setTimeout(done, 5000));
+            assert(!flag);
         });
 
     });

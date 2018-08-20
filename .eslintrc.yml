@@ -21,7 +21,6 @@
     no-eval: error
     no-implicit-coercion: error
     no-implied-eval: error
-    no-invalid-this: error
     no-iterator: error
     no-loop-func: error
     no-multi-str: error
@@ -65,6 +64,8 @@
           return:
              after: true
           throw:
+             after: true
+          var:
              after: true
     line-comment-position: error
     max-params:
