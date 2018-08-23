@@ -10,7 +10,7 @@ lint-js:
    - docker
  script:
    - npm install -g eslint
-   - find $CI_PROJECT_DIR -type f -name '*.js' -print0 | xargs -0 -n1 -P4 eslint --ignore-pattern "**/*.min.js" | (! grep -v "No syntax errors detected" )
+   - eslint --ignore-pattern "**/*.min.js" $CI_PROJECT_DIR
 
 # Performs unit testing.
 unit-test:
