@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node bin/ribamar.js",
-    "test": "mocha test/spec.js"
+    "test": "mocha -b --no-diff test/spec.js"
   },
   "repository": {
     "type": "git",
