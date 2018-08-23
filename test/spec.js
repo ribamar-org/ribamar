@@ -154,6 +154,12 @@ describe('Router', () => {
             assert.equal(typeof router.run('GET version'), 'string');
         });
 
+        it('should expose context object to the underlying route', function(){
+            router = new Router({ here: 'here' });
+            router.routes.test = { test: function(){ assert.equal(this.here, 'here') }};
+            router.run('TEST test');
+        });
+
     });
 
 });
