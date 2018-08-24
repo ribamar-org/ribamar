@@ -5,7 +5,7 @@ Ribamar is an open-source back-end application for managing user accounts, authe
 Ribamar is ideal to work as a micro-service. Just setup, plug and BAM!
 
 ## Quick Start
-1. Ribamar requires the installation of - [NodeJS](https://nodejs.org/en/download/current/) and [MongoDB Community Server](https://www.mongodb.com/download-center#community) to properly work.
+1. Ribamar requires the installation of [NodeJS](https://nodejs.org/en/download/current/) and [MongoDB Community Server](https://www.mongodb.com/download-center#community) to properly work.
 2. Once Node is up, install Ribamar globally with: `npm i -g ribamar`.
 3. Once MongoDB is up, start Ribamar Server with: `ribamar`.
 4. In your browser, hit `http://localhost:6776`.
