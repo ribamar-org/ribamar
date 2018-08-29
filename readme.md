@@ -1,4 +1,5 @@
-# Ribamar
+
+<img width="320" alt="Ribamar" src="https://i.imgur.com/MNzMeoO.png" />
 
 Ribamar is an open-source back-end application for managing user accounts, authentication and authorization. Send confirmation e-mails; manage groups; store general user data and much more, all through a simple RESTful API.
 
