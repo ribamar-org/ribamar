@@ -29,7 +29,7 @@ describe('Router', () => {
         });
 
         it('should run a route just fine', function(){
-            assert.equal(typeof router.run('GET version'), 'string');
+            assert.equal(typeof router.run('GET '), 'string');
         });
 
         it('should expose context object to the underlying route', function(){
@@ -61,7 +61,7 @@ describe('Router', () => {
         });
 
         it('should return all available methods for the given entity', function(){
-            let ops = router.options('version');
+            let ops = router.options('');
             assert.equal(ops.length, 1);
             assert.equal(ops[0], 'get');
         });

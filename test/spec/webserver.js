@@ -108,14 +108,6 @@ describe('WebServer', () => {
             });
         });
 
-        it('should refuse clints not supporting application/json (406)', function(done){
-            request('http://localhost:7654/test500', { accept: 'text/css' }, 'GET', false, (s, h, b) => {
-                assert.equal(s, 406);
-                assert.equal(b, 'application/json');
-                done();
-            });
-        });
-
         it('should refuse requests to methods inexistent in the entity (405)', function(done){
             request('http://localhost:7654/test500', {}, 'POST', '{"got":"true"}', (s, h) => {
                 assert.equal(s, 405);
@@ -138,13 +130,10 @@ describe('WebServer', () => {
             });
         });
 
-        it('should refuse requests with malformed URL or non-JSON body (400)', function(done){
-            request('http://localhost:7654/n:o#th?in?g', {}, 'GET', false, s => {
+        it('should refuse requests with non-JSON body (400)', function(done){
+            request('http://localhost:7654/testsuccess', {}, 'POST', 'wwfwfwfwf', s => {
                 assert.equal(s, 400);
-                request('http://localhost:7654/testsuccess', {}, 'POST', 'wwfwfwfwf', s => {
-                    assert.equal(s, 400);
-                    done();
-                });
+                done();
             });
         });
 
