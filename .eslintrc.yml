@@ -67,10 +67,12 @@
              after: true
           var:
              after: true
+          const:
+             after: true
     line-comment-position: error
     max-params:
       - error
-      - 5
+      - 4
     no-tabs: error
     quotes:
       - warn
