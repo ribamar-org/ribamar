@@ -38,6 +38,34 @@ describe('Router', () => {
             router.run('TEST test');
         });
 
+        it('should expose input object as parameter to routed method', function(){
+            router = new Router();
+            router.routes.test = { test: function(input){ assert.equal(input.got, 'here') }};
+            router.run('TEST test', { got: 'here'});
+        });
+
+    });
+
+    describe('#options(entity)', function(){
+
+        beforeEach(function(){
+            router = new Router();
+        });
+
+        it('should fail when missing arguments', function(){
+            assert.throws(() => router.options());
+        });
+
+        it('should fail when inexisting entity', function(){
+            assert.throws(() => router.options('baluba'));
+        });
+
+        it('should return all available methods for the given entity', function(){
+            let ops = router.options('version');
+            assert.equal(ops.length, 1);
+            assert.equal(ops[0], 'get');
+        });
+
     });
 
 });
