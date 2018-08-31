@@ -6,7 +6,7 @@ describe('Scheduler', () => {
     let flag, bg;
     const Router = require('../../lib/router');
     let router = new Router();
-    router.routes.test = { test: () => flag = true };
+    router.routes[''] = { get: () => flag = true };
 
     describe('#constructor()', function(){
         it('should never fail for any reason', function(){
@@ -34,7 +34,7 @@ describe('Scheduler', () => {
             var s = new Date();
             s.setSeconds(s.getSeconds() + 3);
             s = s.getSeconds();
-            bg.start({ test: s + ' * * * * *' }, router);
+            bg.start({ '': s + ' * * * * *' }, router);
             await new Promise(done => setTimeout(done, 5000));
             assert(flag);
         });
@@ -49,7 +49,7 @@ describe('Scheduler', () => {
             var s = new Date();
             s.setSeconds(s.getSeconds() + 3);
             s = s.getSeconds();
-            bg.start({ test: s + ' * * * * *' }, router);
+            bg.start({ '': s + ' * * * * *' }, router);
             await new Promise(done => setTimeout(done, 1000));
             bg.stop();
             await new Promise(done => setTimeout(done, 5000));
