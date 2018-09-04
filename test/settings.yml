@@ -1,2 +1,3 @@
 property: value
-port: 2222
+webserver:
+  port: 2222
