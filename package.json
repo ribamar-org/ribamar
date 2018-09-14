@@ -29,6 +29,8 @@
   },
   "homepage": "https://gitlab.com/riba-riba/ribamar#README",
   "dependencies": {
+    "clone-deep": "^4.0.0",
+    "merge-deep": "^3.0.2",
     "mongodb": "^3.1.1",
     "node-cron": "^1.2.1",
     "node-yaml": "^3.1.1"
