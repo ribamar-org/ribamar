@@ -69,6 +69,8 @@
              after: true
           const:
              after: true
+          let:
+             after: true
     line-comment-position: error
     max-params:
       - error

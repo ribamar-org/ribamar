@@ -1,11 +1,11 @@
 stages:
-  - validate
   - test
+  - check
 
 # Lint js files.
 lint-js:
  image: node
- stage: validate
+ stage: test
  tags:
    - docker
  script:
@@ -14,6 +14,7 @@ lint-js:
 
 # Performs unit testing.
 unit-test:
+  coverage: '/Statements\s*:\s*(\d+(?:\.\d+)?\%)/'
   variables:
     DB_URL: mongodb://mongo:27017
   services:
@@ -30,7 +31,7 @@ unit-test:
 
 # Analyse code quality.
 code_quality:
-  stage: validate
+  stage: check
   image: docker:stable
   variables:
     DOCKER_DRIVER: overlay2
