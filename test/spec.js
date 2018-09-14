@@ -1,6 +1,10 @@
 var unit = process.argv[5];
 
-var cases = [ 'settings', 'database', 'router', 'scheduler', 'logger', 'webserver' ];
+var cases = [
+    'utils', 'settings', 'database', 'router', 'scheduler', 'logger',
+    'webserver', 'api/account', 'api/credential', 'api/authentication',
+    'api/search'
+];
 
 if(unit)
     try{ require('./spec/' + unit); }
