@@ -1,6 +1,10 @@
 
 var assert = require('assert');
 
+function delay(seconds){
+    return new Promise(done => setTimeout(done, seconds * 1000));
+}
+
 describe('Logger', () => {
     const fs = require('fs');
     const Logger = require('../../lib/logger');
@@ -45,7 +49,13 @@ describe('Logger', () => {
 
         afterEach(function(){
             logger.stop();
-        })
+        });
+
+        after(async function(){
+            this.timeout(3000);
+            await delay(2);
+            fs.unlinkSync(process.cwd() + '/test/test.log');
+        });
 
         it('should fail due to missing arguments', function(){
             assert.throws(function(){
