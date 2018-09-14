@@ -45,4 +45,15 @@ describe('/lib/utils.js', () => {
 
     });
 
+    describe('#sanitizeQuery(query)', function(){
+
+        it('should remove object keys containing "$"', function(){
+            let r = utils.sanitizeQuery({a: 'a', '$b': 'b', c: 'c'});
+            assert.equal(typeof r, 'object');
+            assert.equal(Object.keys(r).length, 2);
+            assert.equal(r['$b'], undefined);
+        });
+
+    });
+
 });
