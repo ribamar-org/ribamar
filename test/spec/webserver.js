@@ -1,38 +1,20 @@
 
 const assert = require('assert');
 
+const { post, get, patch, del, put, request } = require('muhb');
+const delay = s => new Promise(done => setTimeout(done, s * 1000));
+
 describe('WebServer', () => {
     const WebServer = require('../../lib/webserver');
-    const http = require('http');
-    const { URL } = require('url');
     const Router = require('../../lib/router');
     let router = new Router();
+    let ws;
 
-    function request(url, headers, method, data){
-        let cb = arguments[4] || false;
-        let cbe = arguments[5] || false;
-        url = new URL(url);
-        let options = {
-            hostname: 'localhost',
-            port: url.port,
-            method: method || 'GET',
-            path: url.pathname + url.search,
-            headers: headers || {}
-        };
-        let req = http.request(options, res => {
-            if(cbe)
-                res.on('error', cbe);
-            res.setEncoding('utf8');
-            let body = '';
-            res.on('data', chunk => body += chunk);
-            res.on('end', () => cb(res.statusCode, res.headers, body));
-        });
-        if(cbe)
-            req.on('error', cbe);
-        if(data)
-            req.write(data);
-        req.end();
-    }
+    after(function(){
+        this.timeout(4000);
+        ws.stop();
+        delay(3);
+    });
 
     router.routes.test500 = { get: () => { throw 'huehue'; } };
     router.routes.testget = { };
@@ -45,8 +27,6 @@ describe('WebServer', () => {
         delete: () => 'DELETE',
         post: () => 'POST'
     };
-
-    let ws;
 
     describe('#constructor()', function(){
         it('should never fail for any reason', function(){
@@ -61,32 +41,30 @@ describe('WebServer', () => {
         });
 
         after(function(){
+            this.timeout(4000);
             ws.stop();
+            delay(3);
         });
 
         it('should fail when missing arguments', function(){
             assert.throws(() => ws.start());
         });
 
-        it('should start a http server in the defined port', function(done){
+        it('should start a http server in the defined port', async function(){
             ws.start({ port: 7654 }, router);
-            request('http://127.0.0.1:7654/', {}, 'GET', false, (s, h, b) => {
-                assert.equal(s, 200);
-                assert.equal(b, 'It works!');
-                done();
-            });
+            let { status, body } = await get('http://127.0.0.1:7654/');
+            assert.equal(status, 200);
+            assert.equal(body, 'It works!');
         });
 
     });
 
     describe('#stop()', function(){
-        it('should stop a started server', function(done){
+        it('should stop a started server', function(){
             ws = new WebServer();
             ws.start({ port: 7654 }, router);
             ws.stop();
-            request('http://127.0.0.1:7654/', {}, 'GET', false, function(){}, () => {
-                done();
-            });
+            assert.rejects( () => get('http://127.0.0.1:7654/') );
         });
     });
 
@@ -101,83 +79,62 @@ describe('WebServer', () => {
             ws.stop();
         });
 
-        it('should pass on unknown exceptions in the API (500)', function(done){
-            request('http://localhost:7654/test500', {}, 'GET', false, s => {
-                assert.equal(s, 500);
-                done();
-            });
+        it('should pass on unknown exceptions in the API (500)', async function(){
+            let { status } = await get('http://127.0.0.1:7654/test500');
+            assert.equal(status, 500);
         });
 
-        it('should refuse requests to methods inexistent in the entity (405)', function(done){
-            request('http://localhost:7654/test500', {}, 'POST', '{"got":"true"}', (s, h) => {
-                assert.equal(s, 405);
-                assert.equal(h.allow, 'GET');
-                done();
-            });
+        it('should refuse requests to methods inexistent in the entity (405)', async function(){
+            let { status, headers } = await post('http://127.0.0.1:7654/test500', '{"got":"true"}');
+            assert.equal(status, 405);
+            assert.equal(headers.allow, 'GET');
         });
 
-        it('should refuse requests to inexisting GET methods of entity (404)', function(done){
-            request('http://localhost:7654/testget', {}, 'GET', false, s => {
-                assert.equal(s, 404);
-                done();
-            });
+        it('should refuse requests to inexisting GET methods of entity (404)', async function(){
+            let { status } = await get('http://127.0.0.1:7654/testget');
+            assert.equal(status, 404);
         });
 
-        it('should refuse requests to inexistent entities (404)', function(done){
-            request('http://localhost:7654/nothing', {}, 'GET', false, s => {
-                assert.equal(s, 404);
-                done();
-            });
+        it('should refuse requests to inexistent entities (404)', async function(){
+            let { status } = await get('http://127.0.0.1:7654/nothing');
+            assert.equal(status, 404);
         });
 
-        it('should refuse requests with non-JSON body (400)', function(done){
-            request('http://localhost:7654/testsuccess', {}, 'POST', 'wwfwfwfwf', s => {
-                assert.equal(s, 400);
-                done();
-            });
+        it('should refuse requests with non-JSON body (400)', async function(){
+            let { status } = await post('http://127.0.0.1:7654/testsuccess', 'wwfwfwfwf');
+            assert.equal(status, 400);
         });
 
-        it('should refuse GET request with body payload (400)', function(done){
-            request('http://localhost:7654/', {}, 'GET', '{"got":"true"}', s => {
-                assert.equal(s, 400);
-                done();
-            });
+        it('should refuse GET request with body payload (400)', async function(){
+            let { status } = await request('http://localhost:7654/', {}, 'GET', '{"got":"true"}');
+            assert.equal(status, 400);
         });
 
-        it('should warn the client when a response is empty (204)', function(done){
-            request('http://localhost:7654/empty', {}, 'GET', false, (s, h, b) => {
-                assert.equal(b, '');
-                assert.equal(s, 204);
-                done();
-            });
+        it('should warn the client when a response is empty (204)', async function(){
+            let { status, body } = await get('http://127.0.0.1:7654/empty');
+            assert.equal(status, 204);
+            assert.equal(body, '');
         });
 
-        it('should respond success to PUT and POST (201)', function(done){
-            request('http://localhost:7654/testsuccess', {}, 'POST', '{"got":"true"}', (s, h, b) => {
-                assert.equal(s, 201);
-                assert.equal(b, 'POST');
-                request('http://localhost:7654/testsuccess', {}, 'PUT', '{"got":"true"}', (s, h, b) => {
-                    assert.equal(s, 201);
-                    assert.equal(b, 'PUT');
-                    done();
-                });
-            });
+        it('should respond success to PUT and POST (201)', async function(){
+            let { status, body } = await post('http://127.0.0.1:7654/testsuccess', '{"got":"true"}');
+            assert.equal(status, 201);
+            assert.equal(body, 'POST');
+            ({ status, body } = await put('http://127.0.0.1:7654/testsuccess', '{"got":"true"}'));
+            assert.equal(status, 201);
+            assert.equal(body, 'PUT');
         });
 
-        it('should respond success to GET, PATCH and DELETE (200)', function(done){
-            request('http://localhost:7654/testsuccess', {}, 'GET', false, (s, h, b) => {
-                assert.equal(s, 200);
-                assert.equal(b, 'GET');
-                request('http://localhost:7654/testsuccess', {}, 'PATCH', '{"got":"true"}', (s, h, b) => {
-                    assert.equal(s, 200);
-                    assert.equal(b, 'PATCH');
-                    request('http://localhost:7654/testsuccess', {}, 'DELETE', false, (s, h, b) => {
-                        assert.equal(s, 200);
-                        assert.equal(b, 'DELETE');
-                        done();
-                    });
-                });
-            });
+        it('should respond success to GET, PATCH and DELETE (200)', async function(){
+            let { status, body } = await get('http://127.0.0.1:7654/testsuccess');
+            assert.equal(status, 200);
+            assert.equal(body, 'GET');
+            ({ status, body } = await patch('http://127.0.0.1:7654/testsuccess', '{"got":"true"}'));
+            assert.equal(status, 200);
+            assert.equal(body, 'PATCH');
+            ({ status, body } = await del('http://127.0.0.1:7654/testsuccess'));
+            assert.equal(status, 200);
+            assert.equal(body, 'DELETE');
         });
 
     });
@@ -200,31 +157,25 @@ describe('WebServer', () => {
             ws.stop();
         });
 
-        it('should expose request headers to route method', function(done){
-            request('http://localhost:7654/integ', {}, 'GET', false, (s, h, b) => {
-                var o = JSON.parse(b);
-                assert.equal(typeof o.headers, 'object');
-                done();
-            });
+        it('should expose request headers and path to route method', async function(){
+            let { body } = await get('http://127.0.0.1:7654/integ/cool');
+            var o = JSON.parse(body);
+            assert.equal(typeof o.headers, 'object');
+            assert.equal(o.path[1], 'cool');
         });
 
-        it('should expose request body to route method', function(done){
-            request('http://localhost:7654/integ', {}, 'POST', '{"got":"true"}', (s, h, b) => {
-                var o = JSON.parse(b);
-                assert.equal(typeof o.body, 'object');
-                done();
-            });
+        it('should expose request body to route method', async function(){
+            let { body } = await post('http://127.0.0.1:7654/integ', '{"got":"true"}');
+            var o = JSON.parse(body);
+            assert.equal(typeof o.body, 'object');
         });
 
-        it('should expose request query parameters to route method', function(done){
-            request('http://localhost:7654/integ?e=e&a=a&e=2&e=3', {}, 'GET', false, (s, h, b) => {
-                var o = JSON.parse(b);
-                assert.equal(o.query.a, 'a');
-                done();
-            });
+        it('should expose request query parameters to route method', async function(){
+            let { body } = await get('http://127.0.0.1:7654/integ?e=e&a=a&e=2&e=3');
+            var o = JSON.parse(body);
+            assert.equal(o.query.a, 'a');
         });
 
     });
-
 
 });

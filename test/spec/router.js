@@ -17,30 +17,30 @@ describe('Router', () => {
         });
 
         it('should fail when missing arguments', function(){
-            assert.throws(() => router.run());
+            assert.rejects(() => router.run());
         });
 
         it('should fail when route is invalid', function(){
-            assert.throws(() => router.run('83sjdhg988'));
+            assert.rejects(() => router.run('83sjdhg988'));
         });
 
         it('should fail when route does not exist', function(){
-            assert.throws(() => router.run('GET nothing'));
+            assert.rejects(() => router.run('GET nothing'));
         });
 
-        it('should run a route just fine', function(){
-            assert.equal(typeof router.run('GET '), 'string');
+        it('should run a route just fine', async function(){
+            assert.equal(typeof await router.run('GET '), 'string');
         });
 
-        it('should expose context object to the underlying route', function(){
+        it('should expose context object to the underlying route', function(done){
             router = new Router({ here: 'here' });
-            router.routes.test = { test: function(){ assert.equal(this.here, 'here') }};
+            router.routes.test = { test: function(){ assert.equal(this.here, 'here'); done(); }};
             router.run('TEST test');
         });
 
-        it('should expose input object as parameter to routed method', function(){
+        it('should expose input object as parameter to routed method', function(done){
             router = new Router();
-            router.routes.test = { test: function(input){ assert.equal(input.got, 'here') }};
+            router.routes.test = { test: function(input){ assert.equal(input.got, 'here'); done(); }};
             router.run('TEST test', { got: 'here'});
         });
 
