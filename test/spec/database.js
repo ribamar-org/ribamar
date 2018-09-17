@@ -4,7 +4,9 @@ var assert = require('assert');
 describe('DataBase', () => {
     const DataBase = require('../../lib/database');
     let db;
-    let url = process.env.DB_URL || 'mongodb://localhost:27017';
+    let DB_URL = process.env.DB_URL || 'mongodb://localhost:27017';
+    let DB_AUTH_URL = process.env.DB_AUTH_URL || 'mongodb://localhost:27018';
+    const SETTINGS = { url: DB_URL, dbName: 'nodeTest' };
 
     describe('#id(value)', function(){
 
@@ -46,7 +48,15 @@ describe('DataBase', () => {
 
         it('should connect to database when settings are valid', async function(){
             this.timeout(3000);
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
+            db.close();
+        });
+
+        it('should connect to auth enabled database when settings include credentials', async function(){
+            this.timeout(3000);
+            await assert.doesNotReject(function(){
+                return db.connect({ url: DB_AUTH_URL, dbName: 'nodeTest', user: 'root', password: '234789' });
+            });
             db.close();
         });
 
@@ -56,7 +66,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
         });
 
         afterEach(function(){
@@ -85,7 +95,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             await db.db.dropDatabase('nodeTest');
         });
 
@@ -116,7 +126,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             await db.db.dropDatabase('nodeTest');
         });
 
@@ -147,7 +157,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             await db.db.dropDatabase('nodeTest');
         });
 
@@ -181,7 +191,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             await db.db.dropDatabase('nodeTest');
         });
 
@@ -212,7 +222,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             await db.db.dropDatabase('nodeTest');
         });
 
@@ -243,7 +253,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             await db.db.dropDatabase('nodeTest');
         });
 
@@ -274,7 +284,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             await db.db.dropDatabase('nodeTest');
         });
 
@@ -305,7 +315,7 @@ describe('DataBase', () => {
 
         beforeEach(async function(){
             db = new DataBase();
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             await db.db.dropDatabase('nodeTest');
         });
 
@@ -343,7 +353,7 @@ describe('DataBase', () => {
         });
 
         it('should close a connection just fine', async function(){
-            await db.connect({ url: url, dbName: 'nodeTest' });
+            await db.connect(SETTINGS);
             db.close();
         });
 

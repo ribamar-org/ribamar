@@ -17,8 +17,11 @@ unit-test:
   coverage: '/Statements\s*:\s*(\d+(?:\.\d+)?\%)/'
   variables:
     DB_URL: mongodb://mongo:27017
+    DB_AUTH_URL: mongodb://bitnami-mongodb:27017
+    MONGODB_ROOT_PASSWORD: 234789
   services:
     - mongo
+    - bitnami/mongodb
   image: node
   stage: test
   tags:
