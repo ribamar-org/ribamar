@@ -1,11 +1,18 @@
 {
   "name": "ribamar",
-  "version": "0.0.0-a",
+  "version": "0.0.1-a",
   "description": "An open-source back-end application for managing user accounts, authentication and authorization.",
   "main": "./lib/main.js",
+  "bin": {
+    "ribamar": "./bin/ribamar.js"
+  },
+  "scripts": {
+    "start": "node bin/ribamar.js",
+    "test": "mocha -b --no-diff test/spec.js"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/riba-riba/ribamar.git"
+    "url": "git+https://gitlab.com/ribamar-org/ribamar.git"
   },
   "keywords": [
     "account",
@@ -15,12 +22,21 @@
     "permissions",
     "groups"
   ],
-  "author": "guillitem",
+  "author": "GCSBOSS",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/riba-riba/ribamar/issues"
+    "url": "https://gitlab.com/ribamar-org/ribamar/issues"
   },
-  "homepage": "https://gitlab.com/riba-riba/ribamar#README",
+  "homepage": "https://gitlab.com/ribamar-org/ribamar#README",
   "dependencies": {
+    "clone-deep": "^4.0.0",
+    "merge-deep": "^3.0.2",
+    "mongodb": "^3.1.1",
+    "node-cron": "^1.2.1",
+    "node-yaml": "^3.1.1",
+    "validate": "^4.5.1"
+  },
+  "devDependencies": {
+    "muhb": "0.0.2"
   }
 }

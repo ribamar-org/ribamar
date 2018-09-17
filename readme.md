@@ -15,20 +15,20 @@ Ribamar is ideal to work as a micro-service. Just setup, plug and BAM!
 ## Reporting Bugs
 If you have found any problems in Ribamar be welcome to:
 
-1. [Open an issue](https://gitlab.com/riba-riba/ribamar/issues/new).
+1. [Open an issue](https://gitlab.com/ribamar-org/ribamar/issues/new).
 2. Describe what happened and how.
 3. Still in the issue text, reference the label `~bug`.
 
 We will make sure to take a look when time allow us.
 
 ## Proposing Features
-If you wished to have that awesome feature or have any advice for us, be welcome to:
-1. [Open an issue](https://gitlab.com/riba-riba/ribamar/issues/new).
+If you wish to have that awesome feature or have any advice for us, be welcome to:
+1. [Open an issue](https://gitlab.com/ribamar-org/ribamar/issues/new).
 2. Describe your ideas.
 3. Still in the issue text, reference the label `~proposal`.
 
 ## Contributing
-If you have spot any enhancements to be made and is willing to dirt your hands about it, fork us and [submit your merge request](https://gitlab.com/riba-riba/ribamar/merge_requests/new) so we can collaborate effectively.
+If you have spot any enhancements to be made and is willing to dirt your hands about it, fork us and [submit your merge request](https://gitlab.com/ribamar-org/ribamar/merge_requests/new) so we can collaborate effectively.
 
 Be always sure to follow our cool [guidelines for delightful contribution](wikis/contributing#guidelines).
 
