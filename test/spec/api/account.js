@@ -22,7 +22,7 @@ describe('API: Account', () => {
             await $r.restart();
             await delay(3);
             await $r.database.db.dropDatabase('Ribamar');
-            await $r.database.insert('Account', { credentials: [{id: 'testoooo'}] });
+            await $r.database.insert('Account', { credentials: [{key: 'testoooo'}] });
         });
 
         after(async function(){
@@ -36,35 +36,35 @@ describe('API: Account', () => {
             let { status, body } = await post(ENDPOINT, '{}');
             assert.equal(status, 400);
             let o = JSON.parse(body);
-            assert.equal(o.errors[0], 'missing id');
+            assert.equal(o.errors[0], 'missing key');
         });
 
         it('should fail when passcode doesn\'t match basic security standard', async function(){
-            let { status, body } = await post(ENDPOINT, '{"id":"Jao","passcode":"123"}');
+            let { status, body } = await post(ENDPOINT, '{"key":"Jao","passcode":"123"}');
             assert.equal(status, 400);
             let o = JSON.parse(body);
             assert.equal(o.errors[0], 'too short passcode');
         });
 
         it('should fail when conflicting credential exists', async function(){
-            let { status, body } = await post(ENDPOINT, '{"id":"testoooo","passcode":"12345678"}');
+            let { status, body } = await post(ENDPOINT, '{"key":"testoooo","passcode":"12345678"}');
             assert.equal(status, 400);
             let o = JSON.parse(body);
-            assert.equal(o.errors[0], 'taken id');
+            assert.equal(o.errors[0], 'taken key');
         });
 
         it('should create a new account when everything is ok', async function(){
-            let input = '{"id":"test","passcode":"12345678","test":"test"}';
+            let input = '{"key":"test","passcode":"12345678","test":"test"}';
             let { status, body } = await post(ENDPOINT, input);
             assert.equal(status, 201);
             let o = JSON.parse(body);
             assert.equal(typeof o.id, 'string');
-            assert(await $r.database.exists('Account', 'credentials.id', 'test'));
+            assert(await $r.database.exists('Account', 'credentials.key', 'test'));
             assert(await $r.database.exists('Account', 'data.test', 'test'));
         });
 
         it('should properly log account creation attempt', async function(){
-            let input = '{"id":"test2","passcode":"12345678"}';
+            let input = '{"key":"test2","passcode":"12345678"}';
             await post(ENDPOINT, input);
             this.timeout(4000);
             await delay(2);
@@ -99,7 +99,7 @@ describe('API: Account', () => {
         });
 
         it('should get account info when everything is ok', async function(){
-            let data = { credentials: [{ id: 'test', hash: 'f34cc1dfe3', salt: '155b3c' }]}
+            let data = { credentials: [{ key: 'test', hash: 'f34cc1dfe3', salt: '155b3c' }]}
             let id = await $r.database.insert('Account', data);
             let { status, body } = await get(ENDPOINT + '/' + id);
             assert.equal(status, 200);
@@ -137,7 +137,7 @@ describe('API: Account', () => {
         });
 
         it('should delete the account when everything is ok', async function(){
-            let id = await $r.database.insert('Account', { credentials: [{id: 'test'}]});
+            let id = await $r.database.insert('Account', { credentials: [{key: 'test'}]});
             let { status } = await del(ENDPOINT + '/' + id);
             assert.equal(status, 204);
             assert(!await $r.database.exists('Account', '_id', id));
@@ -180,7 +180,7 @@ describe('API: Account', () => {
         });
 
         it('should update the account when everything is ok', async function(){
-            let acc = { credentials: [{ id: 'test' }], data: { test: 'testa' } };
+            let acc = { credentials: [{ key: 'test' }], data: { test: 'testa' } };
             let id = await $r.database.insert('Account', acc);
             let { status } = await patch(ENDPOINT + '/' + id, '{"test":"testo"}');
             assert.equal(status, 204);
