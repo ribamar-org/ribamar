@@ -11,7 +11,7 @@ describe('lib/settings.js', () => {
         () => assert.equal(getSettings('./no-file-at-all').webserver.port, 6776));
 
     it('should read input yaml file and add its properties to resulting object', function(){
-        let c = getSettings('./test/settings.yml');
+        let c = getSettings('./test/res/settings.yml');
         assert.equal(c.property, 'value');
     });
 
@@ -21,7 +21,7 @@ describe('lib/settings.js', () => {
     });
 
     it('should overwrite duplicate properties in resulting object', function(){
-        let c = getSettings('./test/settings.yml');
+        let c = getSettings('./test/res/settings.yml');
         assert.equal(c.webserver.port, 2222);
         let d = getSettings({ webserver: {port: 2222} });
         assert.equal(d.webserver.port, 2222);

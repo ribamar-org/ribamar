@@ -21,11 +21,11 @@ describe('WebServer', () => {
     router.routes.empty = { get: () => '' };
 
     router.routes.testsuccess = {
-        get: () => 'GET',
-        patch: () => 'PATCH',
-        put: () => 'PUT',
-        delete: () => 'DELETE',
-        post: () => 'POST'
+        get: () => ({ m: 'GET' }),
+        patch: () => ({ m: 'PATCH' }),
+        put: () => ({ m: 'PUT' }),
+        delete: () => ({ m: 'DELETE' }),
+        post: () => ({ m: 'POST' })
     };
 
     describe('#constructor()', function(){
@@ -51,7 +51,7 @@ describe('WebServer', () => {
         });
 
         it('should start a http server in the defined port', async function(){
-            ws.start({ port: 7654 }, router);
+            ws.start({ port: 7654, router: router });
             let { status, body } = await get('http://127.0.0.1:7654/');
             assert.equal(status, 200);
             assert.equal(body, 'It works!');
@@ -62,9 +62,11 @@ describe('WebServer', () => {
     describe('#stop()', function(){
         it('should stop a started server', function(){
             ws = new WebServer();
-            ws.start({ port: 7654 }, router);
+            ws.start({ port: 7654, router: router });
             ws.stop();
             assert.rejects( () => get('http://127.0.0.1:7654/') );
+            ws.server = null;
+            ws.stop();
         });
     });
 
@@ -72,7 +74,7 @@ describe('WebServer', () => {
 
         beforeEach(function(){
             ws = new WebServer();
-            ws.start({ port: 7654 }, router);
+            ws.start({ port: 7654, router: router });
         });
 
         afterEach(function(){
@@ -119,22 +121,22 @@ describe('WebServer', () => {
         it('should respond success to PUT and POST (201)', async function(){
             let { status, body } = await post('http://127.0.0.1:7654/testsuccess', '{"got":"true"}');
             assert.equal(status, 201);
-            assert.equal(body, 'POST');
+            assert.equal(body, '{"m":"POST"}');
             ({ status, body } = await put('http://127.0.0.1:7654/testsuccess', '{"got":"true"}'));
             assert.equal(status, 201);
-            assert.equal(body, 'PUT');
+            assert.equal(body, '{"m":"PUT"}');
         });
 
         it('should respond success to GET, PATCH and DELETE (200)', async function(){
             let { status, body } = await get('http://127.0.0.1:7654/testsuccess');
             assert.equal(status, 200);
-            assert.equal(body, 'GET');
+            assert.equal(body, '{"m":"GET"}');
             ({ status, body } = await patch('http://127.0.0.1:7654/testsuccess', '{"got":"true"}'));
             assert.equal(status, 200);
-            assert.equal(body, 'PATCH');
+            assert.equal(body, '{"m":"PATCH"}');
             ({ status, body } = await del('http://127.0.0.1:7654/testsuccess'));
             assert.equal(status, 200);
-            assert.equal(body, 'DELETE');
+            assert.equal(body, '{"m":"DELETE"}');
         });
 
     });
@@ -150,7 +152,7 @@ describe('WebServer', () => {
 
         beforeEach(function(){
             ws = new WebServer();
-            ws.start({ port: 7654 }, router);
+            ws.start({ port: 7654, router: router });
         });
 
         afterEach(function(){

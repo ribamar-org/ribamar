@@ -26,8 +26,8 @@ describe('API: Search', () => {
         });
 
         it('should list all account ids when nothing special is input', async function(){
-            await $r.database.insert('Account', { data: {}, random: 28, credentials: [ {id: 't1'} ]});
-            await $r.database.insert('Account', { data: {}, credentials: [ {id: 't2'} ] });
+            await $r.database.insert('Account', { data: {}, random: 28, credentials: [ {key: 't1'} ]});
+            await $r.database.insert('Account', { data: {}, credentials: [ {key: 't2'} ] });
             let { status, body } = await get(ENDPOINT);
             assert.equal(status, 200);
             let o = JSON.parse(body);
@@ -35,8 +35,8 @@ describe('API: Search', () => {
         });
 
         it('should list accounts and specified fields', async function(){
-            await $r.database.insert('Account', { data: {}, creation: new Date(), credentials: [ {id: 't3'} ]});
-            await $r.database.insert('Account', { data: {}, creation: new Date(), credentials: [ {id: 't4'} ]});
+            await $r.database.insert('Account', { data: {}, creation: new Date(), credentials: [ {key: 't3'} ]});
+            await $r.database.insert('Account', { data: {}, creation: new Date(), credentials: [ {key: 't4'} ]});
             let { status, body } = await get(ENDPOINT + '?fields=creation');
             assert.equal(status, 200);
             let o = JSON.parse(body);
@@ -59,8 +59,8 @@ describe('API: Search', () => {
         });
 
         it('should list only rows matching the query', async function(){
-            await $r.database.insert('Account', { data: { test: '2' }, credentials: [ {id: 't5'} ]});
-            await $r.database.insert('Account', { data: { test: '2' }, credentials: [ {id: 't6'} ]});
+            await $r.database.insert('Account', { data: { test: '2' }, credentials: [ {key: 't5'} ]});
+            await $r.database.insert('Account', { data: { test: '2' }, credentials: [ {key: 't6'} ]});
             let { status, body } = await get(ENDPOINT + '?fields=test&test=2&$eq=3');
             assert.equal(status, 200);
             let o = JSON.parse(body);
