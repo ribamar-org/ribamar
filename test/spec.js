@@ -2,8 +2,8 @@ var unit = process.argv[5];
 
 var cases = [
     'utils', 'settings', 'database', 'router', 'scheduler', 'logger',
-    'webserver', 'api/account', 'api/credential', 'api/authentication',
-    'api/search'
+    'webserver', 'mailer', 'api/account', 'api/credential',
+    'api/authentication', 'api/search'
 ];
 
 if(unit)
