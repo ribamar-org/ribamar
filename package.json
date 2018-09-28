@@ -30,10 +30,12 @@
   "homepage": "https://gitlab.com/ribamar-org/ribamar#README",
   "dependencies": {
     "clone-deep": "^4.0.0",
+    "markdown": "^0.5.0",
     "merge-deep": "^3.0.2",
     "mongodb": "^3.1.1",
     "node-cron": "^1.2.1",
     "node-yaml": "^3.1.1",
+    "nodemailer": "^4.6.8",
     "validate": "^4.5.1"
   },
   "devDependencies": {
