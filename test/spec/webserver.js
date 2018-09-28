@@ -51,7 +51,7 @@ describe('WebServer', () => {
         });
 
         it('should start a http server in the defined port', async function(){
-            ws.start({ port: 7654 }, router);
+            ws.start({ port: 7654, router: router });
             let { status, body } = await get('http://127.0.0.1:7654/');
             assert.equal(status, 200);
             assert.equal(body, 'It works!');
@@ -62,7 +62,7 @@ describe('WebServer', () => {
     describe('#stop()', function(){
         it('should stop a started server', function(){
             ws = new WebServer();
-            ws.start({ port: 7654 }, router);
+            ws.start({ port: 7654, router: router });
             ws.stop();
             assert.rejects( () => get('http://127.0.0.1:7654/') );
             ws.server = null;
@@ -74,7 +74,7 @@ describe('WebServer', () => {
 
         beforeEach(function(){
             ws = new WebServer();
-            ws.start({ port: 7654 }, router);
+            ws.start({ port: 7654, router: router });
         });
 
         afterEach(function(){
@@ -152,7 +152,7 @@ describe('WebServer', () => {
 
         beforeEach(function(){
             ws = new WebServer();
-            ws.start({ port: 7654 }, router);
+            ws.start({ port: 7654, router: router });
         });
 
         afterEach(function(){

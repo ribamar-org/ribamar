@@ -34,7 +34,7 @@ describe('Scheduler', () => {
             var s = new Date();
             s.setSeconds(s.getSeconds() + 3);
             s = s.getSeconds();
-            bg.start({ '': s + ' * * * * *' }, router);
+            bg.start({ '': s + ' * * * * *', router: router });
             await new Promise(done => setTimeout(done, 5000));
             assert(flag);
         });
@@ -49,7 +49,7 @@ describe('Scheduler', () => {
             var s = new Date();
             s.setSeconds(s.getSeconds() + 3);
             s = s.getSeconds();
-            bg.start({ '': s + ' * * * * *' }, router);
+            bg.start({ '': s + ' * * * * *', router: router });
             await new Promise(done => setTimeout(done, 1000));
             bg.stop();
             await new Promise(done => setTimeout(done, 5000));
