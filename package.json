@@ -1,7 +1,7 @@
 {
   "name": "ribamar",
-  "version": "0.0.1-a",
-  "description": "An open-source back-end application for managing user accounts, authentication and authorization.",
+  "version": "0.1.0",
+  "description": "Ribamar is a RESTful microservice for managing user accounts, authentication, and authorization. Send e-mails; manage groups; store general user data and more.",
   "main": "./lib/main.js",
   "bin": {
     "ribamar": "./bin/ribamar.js"

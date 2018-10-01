@@ -1,4 +1,17 @@
 Ribamar Changelog
 
+[BC]: Breaking Change
+[NF]: New Functionality
+[BF]: Bug Fix
+
+2018-10-01 [v0.1.0]
+- Fix deprecated codeclimate settings.
+- Add support for mongodb authentication [NF].
+- Improve Ribamar CLI.
+- Fix some unhandled exceptions [BF].
+- API: Renamed Credential "id" to "key" in order to prevent confusion [BC].
+- Add setting to define if a account field is an e-mail address [NF].
+- API: Add method for relaying e-mails to accounts [NF].
+
 2018-09-17 [v0.0.1]
 - First officialy published version.
