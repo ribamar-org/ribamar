@@ -1,6 +1,7 @@
 stages:
   - test
   - check
+  - deploy
 
 # Lint js files.
 lint-js:
@@ -52,3 +53,34 @@ code_quality:
         "registry.gitlab.com/gitlab-org/security-products/codequality:$SP_VERSION" /code
   artifacts:
     paths: [gl-code-quality-report.json]
+
+# Test Docs Generation
+test-pages:
+  image: registry.gitlab.com/pages/hugo:latest
+  stage: check
+  script:
+    - git clone https://gitlab.com/ribamar-org/ribamar-docs.git
+    - cd ribamar-docs
+    - git clone https://github.com/matcornic/hugo-theme-learn.git themes/hugo-theme-learn
+    - hugo
+  except:
+    - master
+
+# Deploy Docs to Gitlab Pages
+pages:
+  image: registry.gitlab.com/pages/hugo:latest
+  stage: deploy
+  environment:
+    name: docs
+    url: $CI_PAGES_URL
+  allow_failure: true
+  script:
+    - git clone https://gitlab.com/ribamar-org/ribamar-docs.git
+    - cd ribamar-docs
+    - git clone https://github.com/matcornic/hugo-theme-learn.git themes/hugo-theme-learn
+    - hugo --baseURL $CI_PAGES_URL -d ../public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
