@@ -1,7 +1,11 @@
 
-<img width="320" alt="Ribamar" src="https://i.imgur.com/MNzMeoO.png" />
+![Ribamar](https://i.imgur.com/MNzMeoO.png)
 
 Ribamar is an open source RESTful micro-service for managing user accounts, authentication, and authorization. Send confirmation e-mails; manage groups; store general user data etc...
+
+- [Check the full docs](https://ribamar-org.gitlab.io/ribamar)
+- [Docker Container](https://hub.docker.com/r/ribamarorg/ribamar/)
+- [NPM Package](https://www.npmjs.com/package/ribamar)
 
 ## Quick Start
 1. Ribamar requires the installation of [NodeJS](https://nodejs.org/en/download/current/) and [MongoDB Community Server](https://www.mongodb.com/download-center#community) to properly work.
@@ -9,6 +13,37 @@ Ribamar is an open source RESTful micro-service for managing user accounts, auth
 3. Once MongoDB is up, start Ribamar Server with: `ribamar`.
 4. In your browser, hit `http://localhost:6776`.
 5. You have successfully started quickly!
+
+## Or Start With Docker
+Check the following list:
+- Pull the container with `docker pull ribamarorg/ribamar`.
+- There must be a running MongoDB instance (possibly in a container too).
+- Ribamar container must be able to reach the database.
+- Ribamar container will read a [configuration file](https://ribamar-org.gitlab.io/ribamar/settings/) if mounted in `/usr/src/ribamar/conf.yml`.
+
+The following files may help you to `docker-compose up -d ribamar`:
+
+```yml
+# conf.yml
+database:
+  url: mongodb://database:27017
+```
+
+```yml
+# docker-compose.yml
+version: '3.7'
+services:
+  app:
+    image: ribamarorg/ribamar
+    ports:
+      - "6776:6776"
+    volumes:
+      - "./conf.yml:/usr/src/ribamar/conf.yml"
+    depends_on:
+      - database
+  database:
+    image: mongo
+```
 
 ## Reporting Bugs
 If you have found any problems with Ribamar, please:
