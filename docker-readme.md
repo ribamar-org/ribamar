@@ -1,14 +1,15 @@
-
-<img width="320" alt="Ribamar" src="https://i.imgur.com/MNzMeoO.png" />
+![Ribamar](https://i.imgur.com/MNzMeoO.png)
 
 Ribamar is an open source RESTful micro-service for managing user accounts, authentication, and authorization. Send confirmation e-mails; manage groups; store general user data etc...
 
 ## Quick Start
-1. Ribamar requires the installation of [NodeJS](https://nodejs.org/en/download/current/) and [MongoDB Community Server](https://www.mongodb.com/download-center#community) to properly work.
-2. Once Node is up, install Ribamar globally with: `npm i -g ribamar`.
-3. Once MongoDB is up, start Ribamar Server with: `ribamar`.
-4. In your browser, hit `http://localhost:6776`.
-5. You have successfully started quickly!
+1. The Ribamar container requires a running instance of [MongoDB](https://hub.docker.com/_/mongo/) to properly work.
+2. Once MongoDB is up, start Ribamar container with: `docker run -d -p 6776:6776 --name ribamar --link db ribamar:latest`.
+3. In your browser, hit `http://localhost:6776`.
+4. You have successfully started quickly!
+
+### Settings File
+Ribamar container expects the default configuration file to be in `/usr/src/ribamar/conf.yml` you should mount it in with `-v` when running or `volumes:` in docker-compose.
 
 ## Reporting Bugs
 If you have found any problems with Ribamar, please:

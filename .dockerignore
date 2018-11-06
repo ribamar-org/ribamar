@@ -1,4 +1,5 @@
 /node_modules/
 /.nyc_output/
 /test/test.log
-docker-compose.yml
+npm-debug.log
+.git
